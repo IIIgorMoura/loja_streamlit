@@ -100,5 +100,16 @@ def Graficos():
 def sidebar():
     with st.sidebar:
         selecionado = option_menu(
-            menu_title='Menu'
+            menu_title='Menu',
+            options=['Home', 'Gráficos'],
+            icons=['house','bar-chart'], # icons/emojis padrão
+            default_index=0
         )
+
+    if selecionado == 'Home':
+        Home()
+        Graficos()
+    elif selecionado == 'Graficos':
+        Graficos()
+
+sidebar()
