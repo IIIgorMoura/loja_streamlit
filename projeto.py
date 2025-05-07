@@ -34,3 +34,35 @@ produtos = st.sidebar.multiselect(
     key='produtos'
 )
 
+# filter dataframe de acordo com as opções selecionadas
+    # o @nome é a key do filtro
+    # `ID Loja` tem `` pois são 2 palavras mas são da mesma info
+df_selecao = df.query('`ID Loja` in @lojas and Produto in @produtos')
+
+# modelo que permite navegar entre 2 páginas
+
+# tela principal
+def Home():
+    st.title('Faturamento das Lojas')
+
+    # graficos e função da página
+    total_vendas = df['Quantidade'].sum()
+    media = df['Quantidade'].mean()
+    mediana = df['Quantidade'].median()
+
+    # trabalhar com colunas ou paginações usa st.columns
+    total1,total2,total3 = st.columns(3) # o numero deve ser == a quant de variaveis
+
+    # na coluna.. vai ter..
+    with total1:
+        # .metric = indicadores rápidos
+            # principais infos visíveis de forma rápida
+            # aqueles indicadores tipo cards de info, total de venda = 400.000
+            # cards rápidos
+        st.metric('Total Vendido', value=int(total_vendas)) # da para colocar icones
+        
+    with total2:
+        st.metric('Média por Produto', value=f'{media:.1f}') # 1 num dps da ,
+
+    with total3:
+        st.metric('Mediana', value=int(mediana))
