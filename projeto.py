@@ -66,3 +66,39 @@ def Home():
 
     with total3:
         st.metric('Mediana', value=int(mediana))
+
+    st.markdown('---') # traçado para dar respiro visual na página
+
+# mesmo padrão do matplotlib
+def Graficos():
+    # graph Bar, qnt prods/loja
+    fig_barras = px.bar(
+        df, 
+        x='Produto', 
+        y='Quantidade', 
+        color='ID Loja', # cada loja vai ter uma cor diferente
+        barmode='group', # diferenciar lojas por cor (agrupando, msm loja, msm cor)
+        title='Quantidade de Produtos Vendidos por Loja'
+    )
+
+    # graph linha com total de vendas por loja
+    fig_linha = px.line(
+        df.groupby(['ID Loja']).sum(numeric_only=True).reset_index(),
+        x='ID Loja',
+        y='Quantidade',
+        title='Total de Vendas por Loja'
+    )
+
+    # graphs lado a lado usa: .columns tmb
+    graf1,graf2 = st.columns(2)
+    with graf1:
+        st.plotly_chart(fig_barras, use_container_width=True)
+    with graf2:
+        st.plotly_chart(fig_linha, use_container_width=True)
+
+# se for usar varias telas
+def sidebar():
+    with st.sidebar:
+        selecionado = option_menu(
+            menu_title='Menu'
+        )
