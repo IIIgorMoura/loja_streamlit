@@ -1,4 +1,5 @@
 # pip install streamlit streamlit-option-menu
+# comando execução: python -m streamlit run projeto.py
 
 import streamlit as st
 import pandas as pd
@@ -15,7 +16,7 @@ st.set_page_config(page_title='Dashboard - Vendas', page_icon='🛒', layout='wi
 df = pd.read_excel('Vendas.xlsx')
 
 # sidebar
-st.sidebar.header()
+st.sidebar.header('Selecione os Filtros')
 
 # filtros de gráfico (flex view)
 lojas = st.sidebar.multiselect(
@@ -73,7 +74,7 @@ def Home():
 def Graficos():
     # graph Bar, qnt prods/loja
     fig_barras = px.bar(
-        df, 
+        df_selecao, 
         x='Produto', 
         y='Quantidade', 
         color='ID Loja', # cada loja vai ter uma cor diferente
@@ -83,7 +84,7 @@ def Graficos():
 
     # graph linha com total de vendas por loja
     fig_linha = px.line(
-        df.groupby(['ID Loja']).sum(numeric_only=True).reset_index(),
+        df_selecao.groupby(['ID Loja']).sum(numeric_only=True).reset_index(),
         x='ID Loja',
         y='Quantidade',
         title='Total de Vendas por Loja'
